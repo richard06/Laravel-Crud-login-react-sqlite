@@ -7,9 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { Head, useForm } from '@inertiajs/react';
-import { format } from 'date-fns';
 import { ChevronDownIcon, TriangleAlert } from 'lucide-react';
-import { Props } from 'node_modules/@headlessui/react/dist/types';
 import * as React from 'react';
 
 interface Fotografia {
@@ -29,7 +27,7 @@ export default function Edit({ fotografia }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         nombre: fotografia.nombre,
         fecha: fotografia.fecha,
-        precio: fotografia.precio,
+        precio: fotografia.precio.toString(),
         autor: fotografia.autor,
         comentario: fotografia.comentario,
     });
@@ -40,13 +38,6 @@ export default function Edit({ fotografia }: Props) {
     };
 
     const [date, setDate] = React.useState<Date | undefined>(undefined);
-
-    React.useEffect(() => {
-        if (date) {
-            setData('fecha', format(date, 'dd-MM-yyyy'));
-        }
-    }, [date]);
-
     const [open, setOpen] = React.useState(false);
 
     return (
@@ -82,16 +73,23 @@ export default function Edit({ fotografia }: Props) {
                         <Label htmlFor="fecha" className="px-1">
                             Fecha de creación
                         </Label>
-
-                        <Popover>
+                        <Popover open={open} onOpenChange={setOpen}>
                             <PopoverTrigger asChild>
                                 <Button variant="outline" id="date" className="w-48 justify-between font-normal">
-                                    {date ? format(date, 'dd-MM-yyyy') : 'Selecciona una fecha'}
+                                    {date ? date.toLocaleDateString() : 'Selecciona una fecha'}
                                     <ChevronDownIcon />
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                                <Calendar mode="single" selected={date} captionLayout="dropdown" onSelect={setDate} initialFocus />
+                                <Calendar
+                                    mode="single"
+                                    selected={date}
+                                    captionLayout="dropdown"
+                                    onSelect={(date) => {
+                                        setDate(date);
+                                        setOpen(false);
+                                    }}
+                                />
                             </PopoverContent>
                         </Popover>
                     </div>

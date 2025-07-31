@@ -30,7 +30,7 @@ interface PageProps {
 }
 
 export default function Index() {
-    const { fotografias, flash } = usePage().props as PageProps;
+    const { fotografias, flash } = usePage().props as unknown as PageProps;
 
     const { processing, delete: destruir } = useForm();
 
@@ -78,7 +78,7 @@ export default function Index() {
                         </TableHeader>
                         <TableBody>
                             {fotografias.map((fotografia) => (
-                                <TableRow>
+                                <TableRow key={fotografia.id}>
                                     <TableCell className="font-medium">{fotografia.id}</TableCell>
                                     <TableCell>{fotografia.nombre}</TableCell>
                                     <TableCell className="text-left">{fotografia.fecha.toString()}</TableCell>

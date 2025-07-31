@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { ChevronDownIcon, TriangleAlert } from 'lucide-react';
@@ -41,16 +41,6 @@ export default function Index() {
     }, [date]);
 
     const [open, setOpen] = React.useState(false);
-    // const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(new Date());
-
-    // const handleDateChange = (fecha: Date | undefined) => {
-    //     setSelectedDate(fecha);
-    //     if (fecha) {
-    //         const formatted = format(fecha, 'dd-MM-yyyy');
-    //         setOpen(false);
-    //         setData('fecha', formatted);
-    //     }
-    // };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -88,12 +78,20 @@ export default function Index() {
                         <Popover open={open} onOpenChange={setOpen}>
                             <PopoverTrigger asChild>
                                 <Button variant="outline" id="date" className="w-48 justify-between font-normal">
-                                    {date ? format(date, 'dd-MM-yyyy') : 'Selecciona una fecha'}
+                                    {date ? date.toLocaleDateString() : 'Selecciona una fecha'}
                                     <ChevronDownIcon />
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                                <Calendar mode="single" selected={date} captionLayout="dropdown" onSelect={setDate} initialFocus />
+                                <Calendar
+                                    mode="single"
+                                    selected={date}
+                                    captionLayout="dropdown"
+                                    onSelect={(date) => {
+                                        setDate(date);
+                                        setOpen(false);
+                                    }}
+                                />
                             </PopoverContent>
                         </Popover>
                     </div>
