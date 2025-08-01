@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/src/style.css" rel="stylesheet">
     {{-- Inline script to detect system dark mode preference and apply it immediately --}}
     <script>
         (function() {
@@ -29,7 +30,6 @@
             background-color: oklch(0.145 0 0);
         }
     </style>
-
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
     <link rel="icon" href="/favicon.ico" sizes="any">
